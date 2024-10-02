@@ -1,44 +1,65 @@
-// Програма для обчислення периметра, площі та визначення виду трикутника:
+// Програма для обчислення периметра, площі та визначення виду трикутника
 
 using System;
 
-class Program
+class Triangle // Клас для роботи з трикутниками
 {
-    static void Main()
+    private double a, b, c; // Сторони трикутника
+
+    public Triangle(double a, double b, double c) // Конструктор для ініціалізації сторін
     {
-        Console.WriteLine("Введіть три сторони трикутника:");
-        double a = double.Parse(Console.ReadLine());
-        double b = double.Parse(Console.ReadLine());
-        double c = double.Parse(Console.ReadLine());
-
-        if (IsValidTriangle(a, b, c))
-        {
-            double perimeter = a + b + c;
-            double semiPerimeter = perimeter / 2;
-            double area = Math.Sqrt(semiPerimeter * (semiPerimeter - a) * (semiPerimeter - b) * (semiPerimeter - c));
-
-            Console.WriteLine($"Периметр трикутника: {perimeter}");
-            Console.WriteLine($"Площа трикутника: {area}");
-            Console.WriteLine($"Вид трикутника: {GetTriangleType(a, b, c)}");
-        }
-        else
-        {
-            Console.WriteLine("Це не дійсний трикутник.");
-        }
+        this.a = a;
+        this.b = b;
+        this.c = c;
     }
 
-    static bool IsValidTriangle(double a, double b, double c)
+    public bool IsValid() // Перевіряємо, чи є трикутник дійсним
     {
-        return a + b > c && a + c > b && b + c > a;
+        return a + b > c && a + c > b && b + c > a; // Правило існування трикутника
     }
 
-    static string GetTriangleType(double a, double b, double c)
+    public double Perimeter() // Обчислюємо периметр
+    {
+        return a + b + c; // Сума сторін
+    }
+
+    public double Area() // Обчислюємо площу
+    {
+        double s = Perimeter() / 2; // Півпериметр
+        return Math.Sqrt(s * (s - a) * (s - b) * (s - c)); // Формула Герона для площі
+    }
+
+    public string GetTriangleType() // Визначаємо тип трикутника
     {
         if (a == b && b == c)
-            return "Рівносторонній";
+            return "Рівносторонній"; 
         else if (a == b || b == c || a == c)
-            return "Рівнобедрений";
+            return "Рівнобедрений"; 
         else
-            return "Різносторонній";
+            return "Різносторонній"; 
+    }
+}
+
+class Program 
+{
+    static void Main() 
+    {
+        Console.WriteLine("Введіть три сторони трикутника:"); 
+        double a = double.Parse(Console.ReadLine()); // parse - переобразуєм в int
+        double b = double.Parse(Console.ReadLine()); 
+        double c = double.Parse(Console.ReadLine()); 
+
+        Triangle triangle = new Triangle(a, b, c); // Створюємо об'єкт трикутника
+
+        if (triangle.IsValid()) 
+        {
+            Console.WriteLine($"Периметр трикутника: {triangle.Perimeter()}"); 
+            Console.WriteLine($"Площа трикутника: {triangle.Area()}"); 
+            Console.WriteLine($"Вид трикутника: {triangle.GetTriangleType()}"); 
+        }
+        else
+        {
+            Console.WriteLine("Це не дійсний трикутник."); 
+        }
     }
 }
